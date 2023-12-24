@@ -1,4 +1,5 @@
 const Department = require('../models/department');
+const Employee = require('../models/employee');
 
 
 //Get Data
@@ -27,7 +28,13 @@ const createNewDepartment = async (req, res) =>{
 const getOneDepartment = async (req, res) =>{
     try {
         const {itemID} = req.params;
-        const data = await Department.findById({_id:itemID}).populate('employees')
+        // const data = await Department.findById({_id:itemID}).populate({path:"departments", model:"Employee"})
+        const data = await Department.findById(req.params.id, function (err, department) {
+            // error checks
+            if (err) { return res.status(500).json({ error: err }); }
+            if (!department) { return res.sendStatus(404); }
+            console.log(department);
+        }).populate(department,  { path:"employees", model:"Employee" });
         if(data) console.log("data: ", data)
         if(!data){
             res.status(404).json({message: 'Ohh This Department does not exist'})
