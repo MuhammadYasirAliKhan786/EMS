@@ -21,7 +21,7 @@ app.use('/api/v1',router )
 //Start Server
 const start = async () =>{
     try {
-        await connectDb('mongodb+srv://yasirali:.adgjmKHAN5541842@cluster0.nezlrhw.mongodb.net/crudCourse?retryWrites=true&w=majority');
+        await connectDb(process.env.DATABSE_CONNECT);
         app.listen(port, (req, res) =>{
             console.log('You are listening to port: ', port);
         })
